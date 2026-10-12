@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pact"
+version = "0.1.0"
+description = "PACT: certifying what is written in parallel decoding of diffusion language models"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Anonymous Authors" }]
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.4",
+    "transformers>=4.46",
+    "numpy",
+    "pyyaml",
+    "sympy",
+    "latex2sympy2",
+    "regex",
+    "word2number",
+    "absl-py",
+    "langdetect",
+    "nltk",
+    "immutabledict",
+]
+
+[project.optional-dependencies]
+data = ["datasets"]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

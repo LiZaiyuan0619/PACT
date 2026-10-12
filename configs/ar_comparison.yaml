@@ -1,0 +1,23 @@
+# Appendix D.4 (autoregressive model): time per problem against Qwen3-8B.
+# One answer per problem, greedy decoding in 32-token blocks, at most 256 tokens,
+# 50 problems of each benchmark, everything on the same GPU.  The autoregressive
+# side is scripts/time_ar.py (Qwen3-8B with its key-value cache).
+name: ar_comparison
+
+decoding: {temperature: 0.0, num_samples: 1, gen_length: 256, block_length: 32, seed: 113}
+models: [llada-8b, dream-7b]
+benchmarks: [humaneval, gsm8k]
+num_problems: 50
+
+runs:
+  - name: one_token_per_step
+    rule: one_token_per_step
+  - name: fast_dllm
+    rule: fast_dllm
+    params: {threshold: 0.9}
+  - name: pact-tau0.3
+    rule: pact
+    params: {tau: 0.3, gap: 8}
+  - name: pact-tau0.05
+    rule: pact
+    params: {tau: 0.05, gap: 8}

@@ -1,0 +1,28 @@
+# Versions used for every experiment in the paper (Python 3.11).
+torch==2.9.1
+transformers==4.57.1
+accelerate==1.10.1
+safetensors==0.7.0
+tokenizers==0.22.2
+huggingface_hub==0.36.2
+numpy==2.4.2
+pyyaml==6.0.1
+
+# Math grading
+sympy==1.14.0
+latex2sympy2==1.9.1
+antlr4-python3-runtime==4.7.2
+regex==2026.2.28
+word2number==1.1
+
+# Official IFEval checker (third_party/instruction_following_eval)
+absl-py==2.5.0
+langdetect==1.0.9
+nltk==3.10.3
+immutabledict==4.3.1
+
+# Rebuilding the problem files from Hugging Face (data/prepare_data.py)
+datasets==4.6.1
+
+# Tests
+pytest==8.3.4

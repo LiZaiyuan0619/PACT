@@ -1,0 +1,42 @@
+# Figure 3: each rule swept over its parameter on the code and math benchmarks.
+# Every value lies in the range of the rule in Appendix Table 3.  Not every rule
+# was swept on IFEval, so Figure 3 leaves it out.
+name: sweeps
+
+decoding: {temperature: 0.6, num_samples: 8, gen_length: 256, block_length: 256, seed: 113}
+models: [llada-8b, llada-moe, llada2.1-mini, dream-7b]
+benchmarks: [humaneval, mbpp, gsm8k, math500]
+shards: {mbpp: 2}
+
+sweeps:
+  fast_dllm:
+    param: threshold
+    values: [0.1, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95]
+  fast_dllm_pp:
+    param: delta
+    values: [0.0, 0.1, 0.25, 0.3, 1.0]
+  eb_sampler:
+    param: gamma
+    values: [0.5, 2, 4, 8, 16, 24]
+  klass:
+    param: confidence
+    values: [0.3, 0.5, 0.7, 0.9]
+    params: {kl_threshold: 0.001, history_length: 2}
+  tacg:
+    param: threshold
+    values: [0.5, 0.7, 0.8, 0.9, 0.95]
+  fixed_k:
+    param: k
+    values: [4, 6, 8, 12, 14, 16]
+  pact:
+    param: tau
+    values: [0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7]
+    params: {gap: 8}
+    per_model:
+      llada2.1-mini: {gap: 1}
+  pact_no_spacing:            # Figure 3 also sweeps PACT without spacing
+    rule: pact
+    name: pact_no_spacing
+    param: tau
+    values: [0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.7]
+    params: {gap: 1}

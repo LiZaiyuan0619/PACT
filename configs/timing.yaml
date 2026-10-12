@@ -1,0 +1,30 @@
+# Figure 4: decoding time per problem on 50 HumanEval problems, with the eight
+# answers of each problem decoded together as one block of 256 tokens.  Run every
+# setting of a model on the same GPU; the seconds are stored with the answers.
+name: timing
+
+decoding: {temperature: 0.6, num_samples: 8, gen_length: 256, block_length: 256, seed: 113}
+models: [llada-8b, llada-moe, dream-7b]
+benchmarks: [humaneval]
+num_problems: 50
+
+runs:
+  - name: one_token_per_step
+    rule: one_token_per_step
+  - name: fast_dllm
+    rule: fast_dllm
+    params: {threshold: 0.9}
+  - name: fixed_k
+    rule: fixed_k
+    params: {k: 4}
+  - name: eb_sampler
+    rule: eb_sampler
+    params: {gamma: 24}
+    per_model:
+      llada-8b: {gamma: 16}
+  - name: pact-tau0.3
+    rule: pact
+    params: {tau: 0.3, gap: 8}
+  - name: pact-tau0.05
+    rule: pact
+    params: {tau: 0.05, gap: 8}

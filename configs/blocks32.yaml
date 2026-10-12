@@ -1,0 +1,19 @@
+# Appendix D.2 (32-token blocks): Fast-dLLM and PACT decoding in blocks of 32 tokens.
+# PACT uses g = 4, since a block holds only 32 positions, and is swept over tau.
+name: blocks32
+
+decoding: {temperature: 0.6, num_samples: 8, gen_length: 256, block_length: 32, seed: 113}
+models: [llada-8b, dream-7b]
+benchmarks: [humaneval, mbpp, gsm8k, math500]
+shards: {mbpp: 2}
+
+runs:
+  - name: fast_dllm
+    rule: fast_dllm
+    params: {threshold: 0.9}
+
+sweeps:
+  pact:
+    param: tau
+    values: [0.3, 0.5, 0.7, 0.9]
+    params: {gap: 4}

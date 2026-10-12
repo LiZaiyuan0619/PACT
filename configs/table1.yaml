@@ -1,0 +1,48 @@
+# Table 1: every rule at one setting, four models, five benchmarks.
+# The settings are those of Appendix Table 3.
+name: table1
+
+decoding:
+  temperature: 0.6      # tokens are drawn from p^(1/T)
+  num_samples: 8        # answers per problem, decoded together
+  gen_length: 256       # positions per answer
+  block_length: 256     # one block: the commit rule alone decides the order
+  seed: 113             # the i-th problem of a shard uses seed 113 + i
+
+models: [llada-8b, llada-moe, llada2.1-mini, dream-7b]
+benchmarks: [humaneval, mbpp, gsm8k, math500, ifeval]
+shards: {mbpp: 2}       # MBPP ran as two shards of 250 problems
+
+runs:
+  - name: one_token_per_step
+    rule: one_token_per_step
+
+  - name: fast_dllm
+    rule: fast_dllm
+    params: {threshold: 0.9}
+
+  - name: fast_dllm_pp
+    rule: fast_dllm_pp
+    params: {delta: 0.0}
+
+  - name: eb_sampler
+    rule: eb_sampler
+    params: {gamma: 0.5}
+
+  - name: klass
+    rule: klass
+    params: {confidence: 0.9, kl_threshold: 0.001, history_length: 2}
+
+  - name: tacg
+    rule: tacg
+    params: {threshold: 0.9}
+
+  - name: fixed_k
+    rule: fixed_k
+    params: {k: 4}
+
+  - name: pact
+    rule: pact
+    params: {tau: 0.5, gap: 8}
+    per_model:
+      llada2.1-mini: {gap: 1}   # without spacing on LLaDA2.1-mini
