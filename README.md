@@ -1,5 +1,7 @@
 # PACT: Certifying What Is Written in Parallel Decoding of Diffusion Language Models
 
+Paper: [arXiv](https://arxiv.org/abs/2611.04152)
+
 This repository holds the code of the paper. It contains PACT, the commit rules we
 compare it with, and the decoding loop they share. It also contains the four models,
 the five benchmarks with their grading, and the configs of every experiment.
